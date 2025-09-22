@@ -38,7 +38,7 @@ if (rootElement && !rootElement.innerHTML) {
     <StrictMode>
       <QueryClientProviderWrapper queryClient={queryClient}>
         <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-        <RouterProvider router={router} />
+          <RouterProvider router={router} />
         </ThemeProvider>
       </QueryClientProviderWrapper>
     </StrictMode>,

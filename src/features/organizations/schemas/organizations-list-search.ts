@@ -5,4 +5,6 @@ export const organizationsListSearchSchema = z.object({
   _per_page: z.number().optional().default(5),
 })
 
-export type OrganizationsListSearch = z.infer<typeof organizationsListSearchSchema>
+export type OrganizationsListSearch = z.infer<
+  typeof organizationsListSearchSchema
+>
