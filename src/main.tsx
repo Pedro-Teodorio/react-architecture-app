@@ -3,13 +3,14 @@ import ReactDOM from 'react-dom/client'
 import { RouterProvider, createRouter } from '@tanstack/react-router'
 
 import { queryClient } from './lib/queryClient'
-import { QueryClientProviderWrapper } from './providers/QueryClientProvider'
+import { QueryClientProviderWrapper } from './providers/queryclient-provider.tsx'
 
 // Import the generated route tree
 import { routeTree } from './routeTree.gen'
 
 import './styles.css'
 import reportWebVitals from './reportWebVitals.ts'
+import { ThemeProvider } from './providers/theme-provider.tsx'
 
 const router = createRouter({
   routeTree,
@@ -36,7 +37,9 @@ if (rootElement && !rootElement.innerHTML) {
   root.render(
     <StrictMode>
       <QueryClientProviderWrapper queryClient={queryClient}>
+        <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
         <RouterProvider router={router} />
+        </ThemeProvider>
       </QueryClientProviderWrapper>
     </StrictMode>,
   )

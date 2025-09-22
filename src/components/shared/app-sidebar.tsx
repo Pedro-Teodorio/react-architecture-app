@@ -1,4 +1,4 @@
-import { Users } from 'lucide-react'
+import { Building, Users } from 'lucide-react'
 import {
   Sidebar,
   SidebarContent,
@@ -24,6 +24,7 @@ export const sidebarItems: Array<SidebarItem> = [
     url: '/users',
     icon: Users,
   },
+  { title: 'Organizações', url: '/organizations', icon: Building },
 ]
 
 export function AppSidebar() {
