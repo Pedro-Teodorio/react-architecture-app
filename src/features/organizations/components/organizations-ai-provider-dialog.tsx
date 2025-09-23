@@ -2,6 +2,7 @@ import { useForm } from 'react-hook-form'
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema'
 import { useQuery } from '@tanstack/react-query'
 import { aiProviderSchema } from '../schemas/organizations'
+import { filterModelsWithAiProvidersId } from '../utils/filter-models-with-ai-providers-id'
 import { organizationsQueries } from '../api/queries'
 import type { AiProvider } from '../schemas/organizations'
 import {
@@ -74,11 +75,10 @@ export function OrganizationsAIProviderDialog({
         provider.id === selectedProviderId,
     ) || []
 
-  const availableModels =
-    models?.filter(
-      (model: { id: string; ai_provider_id: string }) =>
-        model.ai_provider_id === selectedProviderId,
-    ) || []
+  const availableModels = filterModelsWithAiProvidersId(
+    models ?? [],
+    selectedProviderId,
+  )
 
   const handleSubmit = (data: AiProvider) => {
     onSubmit(data)

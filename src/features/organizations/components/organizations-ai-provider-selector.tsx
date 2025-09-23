@@ -1,5 +1,8 @@
 import { PenBox, Plus, Trash2 } from 'lucide-react'
 import { useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
+import { organizationsQueries } from '../api/queries'
+import { filterModelsWithAiProvidersId } from '../utils/filter-models-with-ai-providers-id'
 import { OrganizationsAIProviderDialog } from './organizations-ai-provider-dialog'
 import type { AiProvider } from '../schemas/organizations'
 import { Button } from '@/components/ui/button'
@@ -34,6 +37,9 @@ export function OrganizationsAIProviderSelector({
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [editingIndex, setEditingIndex] = useState<number | null>(null)
 
+  // Buscar todos os modelos disponíveis
+  const { data: models = [] } = useQuery(organizationsQueries.models())
+
   const handleAdd = () => {
     setEditingIndex(null)
     setIsDialogOpen(true)
@@ -48,16 +54,13 @@ export function OrganizationsAIProviderSelector({
     const newValue = [...value]
 
     if (editingIndex !== null) {
-      // Editando um provider existente
       newValue[editingIndex] = data
       onEdit?.(editingIndex, data)
     } else {
-      // Adicionando um novo provider
       newValue.push(data)
       onAdd?.(data)
     }
 
-    // Notifica o FormField sobre a mudança
     onChange?.(newValue)
 
     setIsDialogOpen(false)
@@ -67,10 +70,8 @@ export function OrganizationsAIProviderSelector({
   const handleRemove = (index: number) => {
     const newValue = value.filter((_, i) => i !== index)
 
-    // Chama o callback opcional
     onRemove?.(index)
 
-    // Notifica o FormField sobre a mudança
     onChange?.(newValue)
   }
 
@@ -134,11 +135,13 @@ export function OrganizationsAIProviderSelector({
                     </div>
                   </CardTitle>
                   <CardDescription className="flex gap-2">
-                    {field.ai_models.map((modelId: string) => (
-                      <Badge variant="default" key={modelId}>
-                        {getModelLabel(modelId)}
-                      </Badge>
-                    ))}
+                    {filterModelsWithAiProvidersId(models, field.ai_provider_id)
+                      .filter((model) => field.ai_models.includes(model.id))
+                      .map((model) => (
+                        <Badge variant="default" key={model.id}>
+                          {getModelLabel(model.id)}
+                        </Badge>
+                      ))}
                   </CardDescription>
                 </CardHeader>
               </Card>

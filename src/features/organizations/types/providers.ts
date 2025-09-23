@@ -12,9 +12,4 @@ export interface Model {
   description?: string
 }
 
-export interface AiProviderDialogData {
-  ai_provider_id: string
-  token: string
-  ai_models: Array<string>
-  base_url?: string
-}
+
